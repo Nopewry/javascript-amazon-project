@@ -1,5 +1,6 @@
 // console.log(products);
 
+//=====================Update Product Grid ============================
 const productGrid = document.querySelector('.products-grid')
 
 let HTML = '';
@@ -46,7 +47,7 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-to-cart-selector-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -63,13 +64,32 @@ products.forEach((product) => {
 })
 
 productGrid.innerHTML = HTML
+//=====================================================================
+
+//=========================Add to Cart Button==========================
 
 document.querySelectorAll('.js-add-to-cart-button').forEach(product => {
   product.addEventListener('click', () => {
-    const productId = product.dataset.productId
-    const quantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value)
-    // console.log(productId);
+    const {productId} = product.dataset
 
+    //=========================Selceted Quantity=======================
+    const quantityElement = Number(document.querySelector(`.js-quantity-selector-${productId}`).value)
+    //=================================================================
+    
+
+    //============================Check Mark===========================
+    //check mark when click add to cart
+    const addToCartCheckedElement = document.querySelector(`.js-added-to-cart-selector-${productId}`)
+    // console.log(addToCartCheckedElement);
+    addToCartCheckedElement.classList.add('added-to-cart-visible')
+    setTimeout(() => {
+      addToCartCheckedElement.classList.remove('added-to-cart-visible')
+    }, 2000);
+    // console.log(productId);
+    //=================================================================
+
+
+    //=======================Update Quantity in Cart===================
     let macthingItem ;
     cart.forEach(item => {
       if (productId === item.productId){
@@ -77,16 +97,18 @@ document.querySelectorAll('.js-add-to-cart-button').forEach(product => {
       }
     })
     if (macthingItem) {
-      macthingItem.quantity += quantity;
+      macthingItem.quantity += quantityElement;
     }else{
       cart.push({
         productId,
-        quantity
+        quantity: quantityElement
       })
     }
-
-    console.log(cart);
+    // console.log(cart);
+    //=================================================================
     
+    //===================Update Number ib Cart Icon====================
+
     let cartQuntity = 0;
 
     cart.forEach(item => {
@@ -95,17 +117,15 @@ document.querySelectorAll('.js-add-to-cart-button').forEach(product => {
 
     document.querySelector('.js-cart-quantity').innerHTML = cartQuntity
 
-    
+    //=================================================================
 
     // console.log(test);
     
-
-
-
   })
 
 
 })
+//=====================================================================
 
 
 
