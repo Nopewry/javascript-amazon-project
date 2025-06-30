@@ -59,12 +59,14 @@ products.forEach((product) => {
           </button>
         </div>
     `
-    console.log(product.id);
+    // console.log(product.id);
     
 })
 
 productGrid.innerHTML = HTML
 //=====================================================================
+
+const addedMessageTimeouts = {};
 
 //=========================Add to Cart Button==========================
 
@@ -82,9 +84,25 @@ document.querySelectorAll('.js-add-to-cart-button').forEach(product => {
     const addToCartCheckedElement = document.querySelector(`.js-added-to-cart-selector-${productId}`)
     // console.log(addToCartCheckedElement);
     addToCartCheckedElement.classList.add('added-to-cart-visible')
-    setTimeout(() => {
-      addToCartCheckedElement.classList.remove('added-to-cart-visible')
-    }, 2000);
+
+    const previousTimeoutId = addedMessageTimeouts[productId];
+    console.log(previousTimeoutId);
+    
+      if (previousTimeoutId) {
+        clearTimeout(previousTimeoutId);
+      }
+
+      const timeoutId = setTimeout(() => {
+        addToCartCheckedElement.classList.remove('added-to-cart-visible');
+      }, 2000);
+
+      // Save the timeoutId for this product
+      
+      
+      // so we can stop it later if we need to.
+      addedMessageTimeouts[productId] = timeoutId;
+
+    
     // console.log(productId);
     //=================================================================
 
