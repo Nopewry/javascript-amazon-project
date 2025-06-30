@@ -51,7 +51,9 @@ products.forEach((product) => {
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary" data-product-id = "${
+            product.id
+          }">
             Add to Cart
           </button>
         </div>
@@ -61,10 +63,108 @@ products.forEach((product) => {
 productGrid.innerHTML = HTML
 
 // const addToCartButtonElement = document.querySelectorAll('button-primary')
-document.querySelectorAll('.button-primary').forEach((addToCartButton, index) => {
-  addToCartButton.addEventListener('click', () => {
+document.querySelectorAll('.button-primary').forEach((product) => {
+  product.addEventListener('click', () => {
     // console.log(`Clicked at index ${index}`);
-    console.log(products.name);
+    // console.log(products.name);
+    const productId = product.dataset.productId
+    // console.log(productId);
+
+    let macthingItem ;
+
+    cart.forEach((item) => {
+      if (productId === item.productId) {
+        macthingItem = item;
+      }
+    });
+
+    if (macthingItem){
+      macthingItem.quantity++;
+    }else{
+      cart.push({
+        productId,
+        quantity: 1
+      });
+    }
+
+    // console.log(cart);
+    let cartQuantity = 0;
+
+    cart.forEach((item) => {
+      cartQuantity += item.quantity;
+    })
+
+    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity
+    
     
   })
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // // console.log(productsHTML);
+
+// document.querySelector(".js-products-grid").innerHTML = productsHTML;
+
+// document.querySelectorAll(".js-add-to-cart").forEach((button) => {
+//   button.addEventListener("click", () => {
+//     // console.log('Added');
+//     // console.log(button.dataset);
+//     // // in .dataset mean get a data attribute
+//     // // data attribute is data-(name) like data-product-id
+//     // console.log(button.dataset.productId);
+//     const productId = button.dataset.productId;
+
+//     let macthingItem;
+
+//     cart.forEach((item) => {
+//       if (productId === item.productId) {
+//         macthingItem = item;
+//       }
+//     });
+
+//     if (macthingItem) {
+//       macthingItem.quantity++;
+//     } else {
+//       cart.push({
+//         productId,
+//         quantity: 1,
+//       });
+//     }
+
+//     let cartQuntity = 0;
+
+//     cart.forEach((item) => {
+//         cartQuntity += item.quantity
+//     })
+
+//     document.querySelector('.js-cart-quantity').innerHTML = cartQuntity
+
+//     // console.log(cart);
+//     // console.log(cartQuntity);
+//   });
+// });
