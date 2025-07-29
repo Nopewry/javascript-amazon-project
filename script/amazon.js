@@ -1,4 +1,9 @@
+import { cart, addToCart } from "../data/cart.js";
+import { products } from "../data/products.js";
+import formatMoney from "./util/moneyFormat.js";
+
 // console.log(products);
+
 
 //=====================Update Product Grid ============================
 const productGrid = document.querySelector('.products-grid')
@@ -27,7 +32,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-price">
-            $${(product.priceCents / 100).toFixed(2)}
+            $${formatMoney(product.priceCents)}
           </div>
 
           <div class="product-quantity-container">
@@ -86,7 +91,7 @@ document.querySelectorAll('.js-add-to-cart-button').forEach(product => {
     addToCartCheckedElement.classList.add('added-to-cart-visible')
 
     const previousTimeoutId = addedMessageTimeouts[productId];
-    console.log(previousTimeoutId);
+    // console.log(previousTimeoutId);
     
       if (previousTimeoutId) {
         clearTimeout(previousTimeoutId);
@@ -108,20 +113,7 @@ document.querySelectorAll('.js-add-to-cart-button').forEach(product => {
 
 
     //=======================Update Quantity in Cart===================
-    let macthingItem ;
-    cart.forEach(item => {
-      if (productId === item.productId){
-        macthingItem = item
-      }
-    })
-    if (macthingItem) {
-      macthingItem.quantity += quantityElement;
-    }else{
-      cart.push({
-        productId,
-        quantity: quantityElement
-      })
-    }
+    addToCart(productId, quantityElement)
     // console.log(cart);
     //=================================================================
     
