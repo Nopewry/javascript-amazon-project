@@ -45,5 +45,5 @@ export function removeFromCart(productId) {
 
 function saveToLocalStorage() {
     localStorage.setItem('cart', JSON.stringify(cart));
-    console.log(localStorage.getItem('cart'));
+    // console.log(localStorage.getItem('cart'));
 }
