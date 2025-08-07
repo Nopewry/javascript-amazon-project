@@ -34,6 +34,10 @@ cart.forEach((cartItem) => {
                 data-product-id=${macthingProduct.id}>
                   Update
                 </span>
+                <input class="quantity-input js-quantity-input">
+                <span class="save-quantity-link link-primary js-save-link">
+                  Save
+                </span>
                 <span class="delete-quantity-link link-primary js-delete-quantity-link"
                 data-product-id=${macthingProduct.id}>
                   Delete
@@ -102,20 +106,17 @@ document.querySelectorAll('.js-delete-quantity-link').forEach((deleteButton) => 
 });
 
 document.querySelectorAll('.js-update-quantity-link').forEach((updateButton) => {
-  updateButton.addEventListener('click', () => {    
+  updateButton.addEventListener('click', () => {
+    const inputElement = document.querySelector('.js-quantity-input');
+    const saveButton = document.querySelector('.js-save-link');
     const {productId} = updateButton.dataset
     document.querySelector(`.js-quantity-label-${productId}`).innerHTML = ' ';
-    updateButton.innerHTML = 
-    `
-      <input>
-      <span class="link-primary js-comfirm-qauntity">
-        Confirm
-      </span>
-    `
+    inputElement.classList.add("is-editing")
+    saveButton.classList.add("is-editing")
   })
 })
 
-document.querySelectorAll('.js-comfirm-qauntity').forEach((confirmButton) =>{
+document.querySelectorAll('.js-comfirm-qauntity').forEach((confirmButton) => {
   confirmButton.addEventListener('click', () => {
     console.log("confirm");
   })
