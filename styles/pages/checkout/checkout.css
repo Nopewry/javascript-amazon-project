@@ -226,3 +226,7 @@
 .is-editing .save-quantity-link{
   display: initial;
 }
+
+.is-editing .js-update-quantity-link{
+  display: none;
+}
