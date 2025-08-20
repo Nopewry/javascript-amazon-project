@@ -51,6 +51,21 @@ export function updateaQuantity(productId, newQuantity) {
   saveToLocalStorage()
 }
 
+export function updateDeliveryOption(productId, newDeliveryOption){
+  // console.log('ad');
+  
+  let macthingItem
+
+  cart.forEach(cartItem => {
+    if(cartItem.productId === productId){
+      macthingItem = cart
+    }
+  });
+  macthingItem.deliveryOptionId = deliveryOptionId
+  
+  saveToLocalStorage();
+}
+
 function saveToLocalStorage() {
     localStorage.setItem('cart', JSON.stringify(cart));
     // console.log(localStorage.getItem('cart'));
