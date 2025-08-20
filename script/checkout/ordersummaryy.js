@@ -4,13 +4,13 @@ import {
   updateaQuantity,
   updateDeliveryOption,
 } from "../../data/cart.js";
-import { products, getProduct } from "../../data/products.js";
+import { getProduct } from "../../data/products.js";
 import formatMoney from "../util/moneyFormat.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 import { deliveryOptions } from "../../data/deliveryOption.js";
 
 export function renderOderSummary() {
-  let checkoutHTML = " ";
+  let checkoutHTML = "";
 
   cart.forEach((cartItem) => {
     const productId = cartItem.productId;
@@ -71,7 +71,7 @@ export function renderOderSummary() {
   });
 
   function deliveryOptionsHTML(macthingProduct, cartItem) {
-    let html = ` `;
+    let html = "";
     deliveryOptions.forEach((deliveryOption) => {
       const today = dayjs();
       const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
@@ -106,7 +106,7 @@ export function renderOderSummary() {
     return html;
   }
 
-  document.querySelector(".js-order-summary").innerHTML += checkoutHTML;
+  document.querySelector(".js-order-summary").innerHTML = checkoutHTML;
 
   document
     .querySelectorAll(".js-delete-quantity-link")
@@ -146,8 +146,7 @@ export function renderOderSummary() {
         newQuantity = 1;
       }
       updateaQuantity(productId, newQuantity);
-      document.querySelector(`.js-quantity-label-${productId}`).innerHTML =
-        newQuantity;
+      document.querySelector(`.js-quantity-label-${productId}`).innerHTML = newQuantity;
 
       div.classList.remove("is-editing");
     });
@@ -155,7 +154,11 @@ export function renderOderSummary() {
 
   document.querySelectorAll(".js-delivery-option").forEach((Element) => {
     Element.addEventListener("click", () => {
+      console.log('asd');
+      
       const { productId, productDeliveryOption } = Element.dataset;
+            console.log(productId);
+            console.log(productDeliveryOption);
       updateDeliveryOption(productId, productDeliveryOption);
       renderOderSummary();
     });

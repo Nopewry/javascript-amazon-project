@@ -54,15 +54,17 @@ export function updateaQuantity(productId, newQuantity) {
 export function updateDeliveryOption(productId, newDeliveryOption){
   // console.log('ad');
   
-  let macthingItem
+  let matchingItem
 
   cart.forEach(cartItem => {
-    if(cartItem.productId === productId){
-      macthingItem = cart
+    if (cartItem.productId === productId) {
+      matchingItem = cartItem
     }
   });
-  macthingItem.deliveryOptionId = deliveryOptionId
-  
+
+  matchingItem.deliveryOptionId = newDeliveryOption
+
+
   saveToLocalStorage();
 }
 
