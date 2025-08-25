@@ -167,13 +167,14 @@ export function renderOderSummary() {
 
   document.querySelectorAll(".js-delivery-option").forEach((Element) => {
     Element.addEventListener("click", () => {
-      console.log('asd');
+      // console.log('asd');
       
       const { productId, productDeliveryOption } = Element.dataset;
-            console.log(productId);
-            console.log(productDeliveryOption);
+            // console.log(productId);
+            // console.log(productDeliveryOption);
       updateDeliveryOption(productId, productDeliveryOption);
       renderOderSummary();
+      paymentSummary();
     });
   });
 }
