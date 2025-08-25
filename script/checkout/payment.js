@@ -4,20 +4,27 @@ import { deliveryOptions, getDeliveryOptions } from "../../data/deliveryOption.j
 import { getProduct } from "../../data/products.js";
 
 export function paymentSummary() {
-    let quantity = 0 ;
-    let price = 0 ;
+    let totalQuntity = 0;
+    let totalPrice = 0;
     
     cart.forEach(cartItem => {
+        let quantity = 0 ;
+        let price = 0 ;
         // console.log(cartItem);
         const productId = cartItem.productId;
         const macthingProduct = getProduct(productId);
-        quantity += Number(cartItem.quantity);
-        price += Number(macthingProduct.priceCents)
+        quantity = Number(cartItem.quantity);
+        price = Number(macthingProduct.priceCents)
+        totalQuntity += quantity;
+        totalPrice += quantity * price
         // console.log(quantity);
+        // console.log(price);
+        // console.log(totalQuntity);
+        // console.log(totalPrice);
           
     });
     
-    document.querySelector('.return-to-home-link').innerHTML = `${quantity} ${quantity > 1 ? 'items' : 'item'}`
+    document.querySelector('.return-to-home-link').innerHTML = `${totalQuntity} ${totalQuntity > 1 ? 'items' : 'item'}`
 
     const html = `
         <div class="payment-summary-title">
@@ -25,8 +32,8 @@ export function paymentSummary() {
         </div>
 
         <div class="payment-summary-row">
-            <div>Items (${quantity}):</div>
-            <div class="payment-summary-money">$${formatMoney(price)}</div>
+            <div>Items (${totalQuntity}):</div>
+            <div class="payment-summary-money">$${formatMoney(totalPrice)}</div>
         </div>
 
         <div class="payment-summary-row">
