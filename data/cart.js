@@ -23,7 +23,8 @@ export function addToCart(productId, quantityElement) {
     }else{
       cart.push({
         productId,
-        quantity
+        quantity,
+        deliveryOptionId : '1'
       })
     }
 

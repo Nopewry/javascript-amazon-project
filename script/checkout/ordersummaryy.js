@@ -116,6 +116,7 @@ export function renderOderSummary() {
         const { productId } = deleteButton.dataset;
         document.querySelector(`.js-cart-item-container-${productId}`).remove();
         removeFromCart(productId);
+        paymentSummary();
       });
     });
 
