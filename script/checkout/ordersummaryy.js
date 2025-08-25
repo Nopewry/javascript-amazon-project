@@ -8,6 +8,7 @@ import { getProduct } from "../../data/products.js";
 import formatMoney from "../util/moneyFormat.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 import { deliveryOptions } from "../../data/deliveryOption.js";
+import { paymentSummary } from "./payment.js";
 
 export function renderOderSummary() {
   let checkoutHTML = "";
@@ -126,15 +127,26 @@ export function renderOderSummary() {
         const div = document.querySelector(
           `.js-cart-item-container-${productId}`
         );
-        document.querySelector(`.js-quantity-label-${productId}`).innerHTML =
-          " ";
+        document.querySelector(`.js-quantity-label-${productId}`).innerHTML = " ";
         div.classList.add("is-editing");
       });
     });
 
   document.querySelectorAll(".js-save-link").forEach((saveButton) => {
+    const { productId } = saveButton.dataset;
     saveButton.addEventListener("click", () => {
-      const { productId } = saveButton.dataset;
+      // const { productId } = saveButton.dataset;
+      saveNewQuantity(productId);
+    });
+    document.querySelector(`.js-quantity-input-${productId}`).addEventListener('keydown', (e) => {
+      if(e.key === 'Enter'){
+        saveNewQuantity(productId)
+      }
+    })
+  });
+
+  function saveNewQuantity(productId) {
+      // const { productId } = saveButton.dataset;
       const div = document.querySelector(
         `.js-cart-item-container-${productId}`
       );
@@ -148,9 +160,10 @@ export function renderOderSummary() {
       updateaQuantity(productId, newQuantity);
       document.querySelector(`.js-quantity-label-${productId}`).innerHTML = newQuantity;
 
+      paymentSummary();
+
       div.classList.remove("is-editing");
-    });
-  });
+  }
 
   document.querySelectorAll(".js-delivery-option").forEach((Element) => {
     Element.addEventListener("click", () => {

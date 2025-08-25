@@ -1,16 +1,18 @@
 import formatMoney from "../util/moneyFormat.js";
 import { cart } from "../../data/cart.js";
-import { deliveryOptions } from "../../data/deliveryOption.js";
+import { deliveryOptions, getDeliveryOptions } from "../../data/deliveryOption.js";
 import { getProduct } from "../../data/products.js";
 
 export function paymentSummary() {
     let quantity = 0 ;
+    let price = 0 ;
     
     cart.forEach(cartItem => {
         // console.log(cartItem);
         const productId = cartItem.productId;
         const macthingProduct = getProduct(productId);
         quantity += Number(cartItem.quantity);
+        price += Number(macthingProduct.priceCents)
         // console.log(quantity);
           
     });
@@ -24,12 +26,12 @@ export function paymentSummary() {
 
         <div class="payment-summary-row">
             <div>Items (${quantity}):</div>
-            <div class="payment-summary-money">$${quantity}</div>
+            <div class="payment-summary-money">$${formatMoney(price)}</div>
         </div>
 
         <div class="payment-summary-row">
             <div>Shipping &amp; handling:</div>
-            <div class="payment-summary-money">$4.99</div>
+            <div class="payment-summary-money">$</div>
         </div>
 
         <div class="payment-summary-row subtotal-row">
