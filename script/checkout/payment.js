@@ -27,7 +27,7 @@ export function paymentSummary() {
         // console.log(price);
         // console.log(totalQuntity);
         // console.log(totalPrice);
-        console.log(totalDeliveryPrice);
+        // console.log(totalDeliveryPrice);
           
     });
 

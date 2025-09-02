@@ -6,9 +6,13 @@ import {
 } from "../../data/cart.js";
 import { getProduct } from "../../data/products.js";
 import formatMoney from "../util/moneyFormat.js";
-import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 import { deliveryOptions } from "../../data/deliveryOption.js";
 import { paymentSummary } from "./payment.js";
+import { 
+  deliveryDate,
+  getDays
+} from "../util/calculateDays.js";
+
 
 export function renderOderSummary() {
   let checkoutHTML = "";
@@ -21,8 +25,8 @@ export function renderOderSummary() {
         <div class="cart-item-container js-cart-item-container-${
           macthingProduct.id
         }">
-            <div class="delivery-date">
-              Delivery date: Tuesday, June 21
+            <div class="delivery-date js-delivery-date">
+              Delivery date: ${deliveryDate(macthingProduct.id)}
             </div>
 
             <div class="cart-item-details-grid">
@@ -71,13 +75,11 @@ export function renderOderSummary() {
     `;
   });
 
+
+
   function deliveryOptionsHTML(macthingProduct, cartItem) {
     let html = "";
     deliveryOptions.forEach((deliveryOption) => {
-      const today = dayjs();
-      const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
-      const dateString = deliveryDate.format("dddd, MMMM DD");
-
       const priceString =
         deliveryOption.priceCents === 0
           ? "FREE"
@@ -95,7 +97,7 @@ export function renderOderSummary() {
             name="delivery-option-${macthingProduct.id}">
           <div>
             <div class="delivery-option-date">
-              ${dateString}
+              ${getDays(deliveryOption)}
             </div>
             <div class="delivery-option-price">
               ${priceString} Shipping
@@ -109,13 +111,11 @@ export function renderOderSummary() {
 
   document.querySelector(".js-order-summary").innerHTML = checkoutHTML;
 
-  document
-    .querySelectorAll(".js-delete-quantity-link")
-    .forEach((deleteButton) => {
+  document.querySelectorAll(".js-delete-quantity-link").forEach((deleteButton) => {
       deleteButton.addEventListener("click", () => {
         const { productId } = deleteButton.dataset;
-        document.querySelector(`.js-cart-item-container-${productId}`).remove();
         removeFromCart(productId);
+        renderOderSummary()
         paymentSummary();
       });
     });
