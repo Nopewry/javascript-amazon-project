@@ -1,5 +1,6 @@
 import { products } from "../data/products.js";
-import { changeStar } from "./utils/star.js";
+import { convertStar } from "./utils/convertStar.js";
+import { convertMoney } from "./utils/convertMoney.js";
 
 const main_container = document.querySelector('.js-products-grid');
 
@@ -20,14 +21,14 @@ products.forEach((product) => {
 
         <div class="product-rating-container">
         <img class="product-rating-stars"
-            src="images/ratings/rating-${changeStar(product.rating.stars)}.png">
+            src="images/ratings/rating-${convertStar(product.rating.stars)}.png">
         <div class="product-rating-count link-primary">
-            87
+            ${product.rating.count}
         </div>
         </div>
 
         <div class="product-price">
-        $10.90
+        ${convertMoney(product.priceCents)}
         </div>
 
         <div class="product-quantity-container">
