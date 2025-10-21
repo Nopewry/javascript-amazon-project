@@ -1,4 +1,6 @@
-const products = [
+
+
+export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     image: "images/products/athletic-cotton-socks-6-pairs.jpg",
@@ -33,7 +35,7 @@ const products = [
     image: "images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg",
     name: "Adults Plain Cotton T-Shirt - 2 Pack",
     rating: {
-      stars: 4.5,
+      stars: 0.5,
       count: 56
     },
     priceCents: 799,
@@ -50,7 +52,7 @@ const products = [
     image: "images/products/black-2-slot-toaster.jpg",
     name: "2 Slot Toaster - Black",
     rating: {
-      stars: 5,
+      stars: 0,
       count: 2197
     },
     priceCents: 1899,
