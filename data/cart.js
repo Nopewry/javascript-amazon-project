@@ -36,3 +36,13 @@ function save_To_Storage(){
     localStorage.setItem('cart', JSON.stringify(cart))
 }
 
+export function updateCartQuantityHead() {
+    let allQuantity = 0;
+    cart.forEach((item) => {
+      allQuantity += item.quantity
+    })
+
+    return allQuantity
+
+}
+

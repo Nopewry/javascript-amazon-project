@@ -1,7 +1,7 @@
 import { products } from "../data/products.js";
 import { convertStar } from "./utils/convertStar.js";
 import { convertMoney } from "./utils/convertMoney.js";
-import { cart, add_To_Cart } from "../data/cart.js";
+import { cart, add_To_Cart, updateCartQuantityHead } from "../data/cart.js";
 
 const main_container = document.querySelector('.js-products-grid');
 
@@ -65,16 +65,7 @@ main_container.innerHTML = HTML
 
 const cartQuantity = document.querySelector('.js-cart-quantity')
 
-function updateCartQuantityHead() {
-    let allQuantity = 0;
-    cart.forEach((item) => {
-      allQuantity += item.quantity
-    })
-    cartQuantity.innerHTML = allQuantity
-    // console.log(allQuantity);
-}
-
-
+cartQuantity.innerHTML = updateCartQuantityHead
 
 
 document.querySelectorAll('.js-add-to-cart').forEach((addButton) => {
