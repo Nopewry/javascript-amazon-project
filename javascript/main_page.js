@@ -1,6 +1,16 @@
 // import { products } from "../data/products.js";
-// import { convertStar } from "./utils/convertStar.js";
-// import { convertMoney } from "./utils/convertMoney.js";
+import { convertStar } from "./utils/convertStar.js";
+import { convertMoney } from "./utils/convertMoney.js";
+
+const { getProducts } = require("./database/getProduct.js");
+const products = await getProducts();
+async function showProducts() {
+  const products = await getProducts();
+  console.log(products);
+}
+
+showProducts();
+
 
 // const main_container = document.querySelector('.js-products-grid');
 
@@ -21,9 +31,9 @@
 
 //         <div class="product-rating-container">
 //         <img class="product-rating-stars"
-//             src="images/ratings/rating-${convertStar(product.rating.stars)}.png">
+//             src="images/ratings/rating-${convertStar(product.rating_stars)}.png">
 //         <div class="product-rating-count link-primary">
-//             ${product.rating.count}
+//             ${product.rating_count}
 //         </div>
 //         </div>
 
@@ -71,11 +81,5 @@
 
 // // console.log(`product ${products}`);
 
-const { getProducts } = require("./database/db.js");
 
-async function showProducts() {
-  const products = await getProducts();
-  console.table(products);
-}
 
-showProducts();
