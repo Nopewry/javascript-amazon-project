@@ -1,8 +1,13 @@
+// import file
+// #######################################################################
 import { products } from "../data/products.js";
 import { convertStar } from "./utils/convertStar.js";
 import { convertMoney } from "./utils/convertMoney.js";
 import { cart, add_To_Cart, updateCartQuantityHead } from "../data/cart.js";
+// #######################################################################
 
+// create HTML
+// #######################################################################
 const main_container = document.querySelector('.js-products-grid');
 
 let HTML = ''
@@ -62,21 +67,26 @@ products.forEach((product) => {
 })
 
 main_container.innerHTML = HTML
+// #######################################################################
 
+//update cart quantity in header
+// #######################################################################
 const cartQuantity = document.querySelector('.js-cart-quantity')
 
 cartQuantity.innerHTML = updateCartQuantityHead
+// #######################################################################
 
-
+//add to cart 
+// #######################################################################
 document.querySelectorAll('.js-add-to-cart').forEach((addButton) => {
   addButton.addEventListener('click', () => {
     
     const productId = addButton.dataset.productId
     const quantity = Number(document.querySelector(`.js-product-quantity-${productId}`).value)
-    console.log(typeof(quantity));
+    // console.log(typeof(quantity));
     // console.log(productId);
     add_To_Cart(productId, quantity)
-    console.log(JSON.parse(localStorage.getItem('cart')));
+    // console.log(JSON.parse(localStorage.getItem('cart')));
 
     updateCartQuantityHead()
     
@@ -84,5 +94,5 @@ document.querySelectorAll('.js-add-to-cart').forEach((addButton) => {
 })
 
 updateCartQuantityHead()
+// #######################################################################
 
-// console.log(`product ${products}`);

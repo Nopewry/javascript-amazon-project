@@ -1,3 +1,5 @@
+// create cart variable
+// #######################################################################
 export let cart = JSON.parse(localStorage.getItem('cart')) || [{
     productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
     quantity: 2,
@@ -7,7 +9,10 @@ export let cart = JSON.parse(localStorage.getItem('cart')) || [{
     quantity: 1,
     deliveryOptionId: '2'
 }];
+// #######################################################################
 
+// add to cart function
+// #######################################################################
 export function add_To_Cart(productId, productQuantity = 1) {
     let matchingProduct = '';
     console.log(productQuantity);
@@ -31,11 +36,17 @@ export function add_To_Cart(productId, productQuantity = 1) {
 
     save_To_Storage()
 }
+// #######################################################################
 
+// save value from cart to localstorage
+// #######################################################################
 function save_To_Storage(){
     localStorage.setItem('cart', JSON.stringify(cart))
 }
+// #######################################################################
 
+// update quantity in header
+// #######################################################################
 export function updateCartQuantityHead() {
     let allQuantity = 0;
     cart.forEach((item) => {
@@ -45,4 +56,4 @@ export function updateCartQuantityHead() {
     return allQuantity
 
 }
-
+// #######################################################################
