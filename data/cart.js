@@ -15,7 +15,7 @@ export let cart = JSON.parse(localStorage.getItem('cart')) || [{
 // #######################################################################
 export function add_To_Cart(productId, productQuantity = 1) {
     let matchingProduct = '';
-    console.log(productQuantity);
+    // console.log(productQuantity);
     
     cart.forEach((item) => {
         if (item.productId === productId) {
@@ -57,3 +57,7 @@ export function updateCartQuantityHead() {
 
 }
 // #######################################################################
+
+// function name(params) {
+    
+// }
