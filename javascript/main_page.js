@@ -3,12 +3,12 @@
 import { products } from "../data/products.js";
 import { convertStar } from "./utils/convertStar.js";
 import { convertMoney } from "./utils/convertMoney.js";
-import { cart, add_To_Cart, updateCartQuantityHead } from "../data/cart.js";
+import { cart, add_To_Cart, update_Cart_Quantity_Head } from "../data/cart.js";
 // #######################################################################
 
 // create HTML
 // #######################################################################
-const main_container = document.querySelector(".js-products-grid");
+const mainContainer = document.querySelector(".js-products-grid");
 
 let HTML = "";
 
@@ -70,14 +70,18 @@ products.forEach((product) => {
     `;
 });
 
-main_container.innerHTML = HTML;
+mainContainer.innerHTML = HTML;
 // #######################################################################
 
 //update cart quantity in header
 // #######################################################################
 const cartQuantity = document.querySelector(".js-cart-quantity");
 
-cartQuantity.innerHTML = updateCartQuantityHead();
+function update_Quantity() {
+  const updateCartQuantityHead = update_Cart_Quantity_Head()
+  cartQuantity.innerHTML = updateCartQuantityHead > 99 ? '99+' : updateCartQuantityHead;
+}
+
 // #######################################################################
 
 //add to cart
@@ -110,9 +114,9 @@ document.querySelectorAll(".js-add-to-cart").forEach((addButton) => {
 
     add_To_Cart(productId, quantity);
 
-    cartQuantity.innerHTML = updateCartQuantityHead();
+    update_Quantity();
   });
 });
 
-updateCartQuantityHead();
+update_Quantity();
 // #######################################################################

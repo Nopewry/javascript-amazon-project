@@ -47,21 +47,30 @@ function save_To_Storage(){
 
 // update quantity in header
 // #######################################################################
-export function updateCartQuantityHead() {
+export function update_Cart_Quantity_Head() {
     let allQuantity = 0;
     cart.forEach((item) => {
       allQuantity += item.quantity
     })
-
-    if (allQuantity > 99){
-        return `99+`
-    }
 
     return allQuantity
 
 }
 // #######################################################################
 
-// function name(params) {
+export function delete_Cart_Item(productId) {
+    let newCart = [];
+    cart.forEach((cartItem) => {
+        if (cartItem.productId !== productId) {
+            newCart.push(cartItem)
+        }
+    })
+    // console.log(newCart);
+    // console.log(cart);
+
+    cart = newCart
+    // console.log(cart);
+    save_To_Storage()
     
-// }
+    
+}
