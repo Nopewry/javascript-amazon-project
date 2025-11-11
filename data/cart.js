@@ -53,6 +53,10 @@ export function updateCartQuantityHead() {
       allQuantity += item.quantity
     })
 
+    if (allQuantity > 99){
+        return `99+`
+    }
+
     return allQuantity
 
 }
