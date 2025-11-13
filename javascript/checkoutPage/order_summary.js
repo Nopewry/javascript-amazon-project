@@ -5,9 +5,9 @@ import {
   cart,
   delete_Cart_Item,
 } from "../../data/cart.js";
-import { products } from "../../data/products.js";
+import { products, get_Matching_Product } from "../../data/products.js";
 import { convertMoney } from "../utils/convertMoney.js";
-// import { payment_Summary } from "./payment_summary.js";
+import { payment_Summary } from "./payment_summary.js";
 // #######################################################################
 
 export function order_Summary() {
@@ -20,13 +20,16 @@ export function order_Summary() {
     let matchingProduct;
     // console.log(cartItem.productId);
 
-    products.forEach((product) => {
-      // matchingProduct = cartItem.productId === product.id ? product : '';
-      if (cartItem.productId === product.id) {
-        matchingProduct = product;
-        // console.log(matchingProduct);
-      }
-    });
+    matchingProduct = get_Matching_Product(cartItem.productId);
+    // console.log(matchingProduct);
+
+    // products.forEach((product) => {
+    //   // matchingProduct = cartItem.productId === product.id ? product : '';
+    //   if (cartItem.productId === product.id) {
+    //     matchingProduct = product;
+    //     // console.log(matchingProduct);
+    //   }
+    // });
     HTML += `
     
     <div class="cart-item-container js-cart-item-container-${
@@ -133,12 +136,10 @@ export function order_Summary() {
       delete_Cart_Item(productId);
       document.querySelector(`.js-cart-item-container-${productId}`).remove();
       update_Quantity();
+      //call payment_Summary to update price
+      payment_Summary();
     });
   });
   // #######################################################################
-
-  // order_Summary()
   update_Quantity();
 }
-// order_Summary()
-// payment_Summary();
