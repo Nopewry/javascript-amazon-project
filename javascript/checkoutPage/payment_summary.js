@@ -58,7 +58,7 @@ export function payment_Summary() {
         <div class="payment-summary-money">${convertMoney(Tax)}</div>
         </div>
 
-        <div class="payment-summary-row total-row">
+        <div class="payment-summary-row total-row ">
         <div>Order total:</div>
         <div class="payment-summary-money">${convertMoney(totalPrice)}</div>
         </div>

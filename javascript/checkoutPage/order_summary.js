@@ -4,6 +4,7 @@ import {
   update_Cart_Quantity_Head,
   cart,
   delete_Cart_Item,
+  add_To_Cart
 } from "../../data/cart.js";
 import { products, get_Matching_Product } from "../../data/products.js";
 import { convertMoney } from "../utils/convertMoney.js";
@@ -51,18 +52,30 @@ export function order_Summary() {
                 ${convertMoney(matchingProduct.priceCents)}
                 </div>
                 <div class="product-quantity">
-                <span>
-                    Quantity: <span class="quantity-label">${
-                      cartItem.quantity
-                    }</span>
-                </span>
-                <span class="update-quantity-link link-primary">
-                    Update
-                </span>
-                <span class="delete-quantity-link link-primary js-delete-button"
-                data-product-id = ${cartItem.productId}>
-                    Delete
-                </span>
+                    <span>
+
+                        Quantity: <span class="quantity-label js-quantity-label-${cartItem.productId}">${
+                          cartItem.quantity
+                        }</span>
+
+                        <input type="text" class="input-new-quantity none-visible js-input-new-quantity-${cartItem.productId}">
+
+                    </span>
+
+                    <span class="update-quantity-link link-primary js-update-button js-update-button-${cartItem.productId}"
+                    data-product-id=${cartItem.productId}>
+                        Update
+                    </span>
+
+                    <span class="ok-quantity-link link-primary none-visible js-ok-button js-ok-button-${cartItem.productId} "
+                    data-product-id=${cartItem.productId}>
+                        OK
+                    </span>
+
+                    <span class="delete-quantity-link link-primary js-delete-button"
+                    data-product-id = ${cartItem.productId}>
+                        Delete
+                    </span>
                 </div>
             </div>
 
@@ -115,7 +128,7 @@ export function order_Summary() {
     `;
   });
 
-  itemCheckoutContainer.innerHTML += HTML;
+  itemCheckoutContainer.innerHTML = HTML;
   // #######################################################################
 
   //update cart quantity in header
@@ -141,5 +154,82 @@ export function order_Summary() {
     });
   });
   // #######################################################################
+
+// update button  
+// #######################################################################
+  document.querySelectorAll(".js-update-button").forEach((updateButton) => {
+    updateButton.addEventListener("click", () => {
+        const productId = updateButton.dataset.productId;
+        // console.log(productId);
+        // const updateInput = document.querySelector(`.js-input-new-quantity-${productId}`)
+        // const quantity = document.querySelector(`.js-quantity-label-${productId}`)
+
+        // show input quantity
+        document.querySelector(`.js-input-new-quantity-${productId}`).style.display = 'inline';
+
+        // hide old quantity
+        document.querySelector(`.js-quantity-label-${productId}`).style.display = 'none';
+
+        // hide update button
+        updateButton.style.display = 'none';
+
+        // show ok button
+        document.querySelector(`.js-ok-button-${productId}`).style.display = 'inline';
+        // document.querySelector(`.js-ok-button`).style.display = 'inline';
+        
+    });
+  });
+// #######################################################################
+
+// ok button
+// #######################################################################
+  document.querySelectorAll(`.js-ok-button`).forEach((okButton) => {
+    const productId = okButton.dataset.productId;
+    const newQuantity =  document.querySelector(`.js-input-new-quantity-${productId}`);
+
+    function update_New_Quantity() {
+        
+        let newQuantityValue = Number(newQuantity.value);
+        // console.log(typeof(newQuantityValue));
+
+        //if new quantity is null make them to 1 
+        if (newQuantityValue <= 0 || Number.isNaN(newQuantityValue) || !newQuantityValue) {
+            newQuantityValue = 1
+        }
+        // add_To_Cart(id of product, quantity, choice)
+        // choice = 1 → increase the existing quantity
+        // choice = 2 → set the quantity to the given value (overwrite)
+        add_To_Cart(productId, Number(newQuantityValue), 2);
+        // console.log(newQuantityValue);
+
+        
+
+        document.querySelector(`.js-quantity-label-${productId}`).style.display = 'inline';
+
+        document.querySelector(`.js-update-button-${productId}`).style.display = 'inline';
+
+        document.querySelector(`.js-ok-button-${productId}`).style.display = 'none';
+
+        newQuantity.style.display = 'none'
+        
+        order_Summary()
+    }
+
+    okButton.addEventListener('click', () => {
+        
+        update_New_Quantity()
+        
+    })
+
+    newQuantity.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            update_New_Quantity()
+        }
+    })
+
+  })
+// #######################################################################
+
+
   update_Quantity();
 }

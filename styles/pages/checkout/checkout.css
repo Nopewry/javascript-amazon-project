@@ -209,3 +209,17 @@
   margin-top: 11px;
   margin-bottom: 15px;
 }
+
+.input-new-quantity{
+  width: 30px;
+}
+
+.visible{
+  display: block;
+}
+
+.none-visible{
+  display: none;
+}
+
+

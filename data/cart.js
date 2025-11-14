@@ -13,7 +13,7 @@ export let cart = JSON.parse(localStorage.getItem('cart')) || [{
 
 // add to cart function
 // #######################################################################
-export function add_To_Cart(productId, productQuantity = 1) {
+export function add_To_Cart(productId, productQuantity, choice = 1) {
     let matchingProduct = '';
     // console.log(productQuantity);
     
@@ -24,7 +24,15 @@ export function add_To_Cart(productId, productQuantity = 1) {
     });
 
     if (matchingProduct) {
-        matchingProduct.quantity += productQuantity
+        if (choice === 1) {
+            matchingProduct.quantity += productQuantity
+        }
+        else if (choice === 2){
+            matchingProduct.quantity = productQuantity
+        }
+        else {
+            return 0;
+        }
     }
     else{
         cart.push({
