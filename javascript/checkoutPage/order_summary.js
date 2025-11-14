@@ -213,6 +213,7 @@ export function order_Summary() {
         newQuantity.style.display = 'none'
         
         order_Summary()
+        payment_Summary()
     }
 
     okButton.addEventListener('click', () => {
