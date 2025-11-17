@@ -4,40 +4,43 @@ import {
   update_Cart_Quantity_Head,
   cart,
   delete_Cart_Item,
-  add_To_Cart
+  add_To_Cart,
+  update_Delivery_Option
 } from "../../data/cart.js";
-import { products, get_Matching_Product } from "../../data/products.js";
+import { get_Matching_Product } from "../../data/products.js";
 import { convertMoney } from "../utils/convertMoney.js";
 import { payment_Summary } from "./payment_summary.js";
+import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js"
+import { deliveryOptions, get_Delivery_Option } from "../../data/delivery.js";
 // #######################################################################
 
+// order_Summary funtion
+// #######################################################################
 export function order_Summary() {
+    const today = dayjs();
+
   // create HTML
   // #######################################################################
   const itemCheckoutContainer = document.querySelector(".js-order-summary");
-  // order_Summary()
+
   let HTML = "";
   cart.forEach((cartItem) => {
+
+    const deliveryOptionId = cartItem.deliveryOptionId;
+    const deliveryOption = get_Delivery_Option(deliveryOptionId);
+    const deliveryDay = today.add(deliveryOption.deliveryDays, 'day');
+    const deliveryDayString = deliveryDay.format('dddd, MMMM D')
+
     let matchingProduct;
-    // console.log(cartItem.productId);
 
     matchingProduct = get_Matching_Product(cartItem.productId);
-    // console.log(matchingProduct);
-
-    // products.forEach((product) => {
-    //   // matchingProduct = cartItem.productId === product.id ? product : '';
-    //   if (cartItem.productId === product.id) {
-    //     matchingProduct = product;
-    //     // console.log(matchingProduct);
-    //   }
-    // });
     HTML += `
     
     <div class="cart-item-container js-cart-item-container-${
       cartItem.productId
     }">
         <div class="delivery-date">
-            Delivery date: Tuesday, June 21
+            Delivery date: ${deliveryDayString}
         </div>
 
         <div class="cart-item-details-grid">
@@ -78,50 +81,11 @@ export function order_Summary() {
                     </span>
                 </div>
             </div>
-
             <div class="delivery-options">
                 <div class="delivery-options-title ">
                     Choose a delivery option:
                 </div>
-                <div class="delivery-option">
-                    <input type="radio" checked
-                    class="delivery-option-input"
-                    name="delivery-option-${cartItem.productId}">
-                    <div>
-                        <div class="delivery-option-date">
-                            Tuesday, June 21
-                        </div>
-                        <div class="delivery-option-price">
-                            FREE Shipping
-                        </div>
-                    </div>
-                </div>
-                <div class="delivery-option">
-                    <input type="radio"
-                    class="delivery-option-input"
-                    name="delivery-option-${cartItem.productId}">
-                    <div>
-                        <div class="delivery-option-date">
-                            Wednesday, June 15
-                        </div>
-                        <div class="delivery-option-price">
-                            $4.99 - Shipping
-                        </div>
-                    </div>
-                </div>
-                <div class="delivery-option">
-                    <input type="radio"
-                    class="delivery-option-input"
-                    name="delivery-option-${cartItem.productId}">
-                    <div>
-                        <div class="delivery-option-date">
-                            Monday, June 13
-                        </div>
-                        <div class="delivery-option-price">
-                            $9.99 - Shipping
-                        </div>
-                    </div>
-                </div>
+                ${delivery_Option(matchingProduct, cartItem)}
             </div>
         </div>
     </div>
@@ -139,13 +103,50 @@ export function order_Summary() {
   }
   // #######################################################################
 
+// delivery option HTML
+// #######################################################################
+  function delivery_Option(matchingProduct, cartItem) {
+    const today = dayjs();
+    // console.log(now.format('dddd, MMMM D'));
+    let HTML = '';
+
+    deliveryOptions.forEach((deliveryOption) => {
+        const deliveryDay = today.add(deliveryOption.deliveryDays, 'day')
+        const deliveryDayString = deliveryDay.format('dddd, MMMM D')
+        const deliveryPrice = deliveryOption.priceCents === 0 ? 'Free ' : convertMoney(deliveryOption.priceCents)
+
+        const isChecked = cartItem.deliveryOptionId === deliveryOption.id
+
+        HTML += `
+            <div class="delivery-option js-delivery-option"
+            data-product-id=${matchingProduct.id}
+            data-delivery-option-id=${deliveryOption.id}
+            >
+                <input type="radio" ${isChecked ? 'Checked' : ' '}
+                class="delivery-option-input"
+                name="delivery-option-${cartItem.productId}">
+                <div>
+                    <div class="delivery-option-date">
+                        ${deliveryDayString}
+                    </div>
+                    <div class="delivery-option-price">
+                        ${deliveryPrice} Shipping
+                    </div>
+                </div>
+            </div>
+        `
+        
+    })
+    return HTML
+  }
+// #######################################################################
+
   // delete button
   // #######################################################################
   document.querySelectorAll(".js-delete-button").forEach((deleteButton) => {
     deleteButton.addEventListener("click", () => {
       const productId = deleteButton.dataset.productId;
-      // console.log(deleteButton);
-      // console.log(productId);
+
       delete_Cart_Item(productId);
       document.querySelector(`.js-cart-item-container-${productId}`).remove();
       update_Quantity();
@@ -160,9 +161,6 @@ export function order_Summary() {
   document.querySelectorAll(".js-update-button").forEach((updateButton) => {
     updateButton.addEventListener("click", () => {
         const productId = updateButton.dataset.productId;
-        // console.log(productId);
-        // const updateInput = document.querySelector(`.js-input-new-quantity-${productId}`)
-        // const quantity = document.querySelector(`.js-quantity-label-${productId}`)
 
         // show input quantity
         document.querySelector(`.js-input-new-quantity-${productId}`).style.display = 'inline';
@@ -200,9 +198,6 @@ export function order_Summary() {
         // choice = 1 → increase the existing quantity
         // choice = 2 → set the quantity to the given value (overwrite)
         add_To_Cart(productId, Number(newQuantityValue), 2);
-        // console.log(newQuantityValue);
-
-        
 
         document.querySelector(`.js-quantity-label-${productId}`).style.display = 'inline';
 
@@ -217,7 +212,6 @@ export function order_Summary() {
     }
 
     okButton.addEventListener('click', () => {
-        
         update_New_Quantity()
         
     })
@@ -231,6 +225,21 @@ export function order_Summary() {
   })
 // #######################################################################
 
+// select delivery option
+// #######################################################################
+  document.querySelectorAll('.js-delivery-option').forEach((optionButton) => {
+    optionButton.addEventListener('click', () => {
+        const { productId, deliveryOptionId} = optionButton.dataset
+        // const deliveryOption = optionButton.dataset.deliveryOptionId
+
+        update_Delivery_Option(productId, deliveryOptionId)
+
+        order_Summary()
+        payment_Summary()
+        
+    })
+  })
+// #######################################################################
 
   update_Quantity();
 }

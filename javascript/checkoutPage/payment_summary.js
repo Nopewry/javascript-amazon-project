@@ -3,6 +3,7 @@
 import { cart, update_Cart_Quantity_Head } from "../../data/cart.js";
 import { get_Matching_Product } from "../../data/products.js";
 import { convertMoney } from "../utils/convertMoney.js";
+import { get_Delivery_Option } from "../../data/delivery.js";
 // #######################################################################
 
 // payment_Summary function
@@ -14,17 +15,25 @@ export function payment_Summary() {
 
   // product price 
   // #######################################################################
-  let allProductPrice = 0;
   let matchingProduct;
+  let matchingDeliveryOption;
+  let allProductPrice = 0;
+  let shippingPrice = 0;
+
   cart.forEach((cartItem) => {
     matchingProduct = get_Matching_Product(cartItem.productId)
+    matchingDeliveryOption = get_Delivery_Option(cartItem.deliveryOptionId)
+
     allProductPrice += matchingProduct.priceCents * cartItem.quantity
+    shippingPrice += matchingDeliveryOption.priceCents
+    // console.log(matchingDeliveryOption);
+    
   });
   // #######################################################################
 
   // price section
   // #######################################################################
-  const shippingPrice = 499;
+  // const shippingPrice = 499;
   const priceBeforeTax = allProductPrice + shippingPrice;
   const Tax = priceBeforeTax * 0.1;
   const totalPrice = priceBeforeTax + Tax;
@@ -45,7 +54,7 @@ export function payment_Summary() {
 
         <div class="payment-summary-row">
         <div>Shipping &amp; handling:</div>
-        <div class="payment-summary-money">$4.99</div>
+        <div class="payment-summary-money">${convertMoney(shippingPrice)}</div>
         </div>
 
         <div class="payment-summary-row subtotal-row">
