@@ -12,6 +12,7 @@ import { convertMoney } from "../utils/convertMoney.js";
 import { payment_Summary } from "./payment_summary.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js"
 import { deliveryOptions, get_Delivery_Option } from "../../data/delivery.js";
+import { add_Business_Days } from "../utils/skipWeekEnd.js";
 // #######################################################################
 
 // order_Summary funtion
@@ -108,10 +109,13 @@ export function order_Summary() {
   function delivery_Option(matchingProduct, cartItem) {
     const today = dayjs();
     // console.log(now.format('dddd, MMMM D'));
-    let HTML = '';
+    let HTML = ''; 
 
     deliveryOptions.forEach((deliveryOption) => {
-        const deliveryDay = today.add(deliveryOption.deliveryDays, 'day')
+        // const deliveryDay = today.add(deliveryOption.deliveryDays, 'day')
+        // console.log(add_Business_Days(today, deliveryOption.deliveryDays));
+        const deliveryDay = add_Business_Days(today, deliveryOption.deliveryDays)
+        
         const deliveryDayString = deliveryDay.format('dddd, MMMM D')
         const deliveryPrice = deliveryOption.priceCents === 0 ? 'Free ' : convertMoney(deliveryOption.priceCents)
 
